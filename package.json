@@ -1,0 +1,27 @@
+{
+  "name": "honey-badger-testing",
+  "version": "1.0.0",
+  "description": "A collection of scripts to test the Honey Badger BFT integration in Parity",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@code.lab10.io:graz/04-artis/honey-badger-testing.git"
+  },
+  "keywords": [
+    "bootstrap",
+    "linting",
+    "testing"
+  ],
+  "author": "dfo@lab10.coop",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.0",
+    "mocha": "^6.1.4"
+  }
+}
