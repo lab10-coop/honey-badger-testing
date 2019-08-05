@@ -4,7 +4,8 @@
   "description": "A collection of scripts to test the Honey Badger BFT integration in Parity",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "keepalive": "node src/keepalive.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,9 @@
   ],
   "author": "dfo@lab10.coop",
   "license": "GPL-3.0-or-later",
-  "dependencies": {},
+  "dependencies": {
+    "web3": "^1.2.0"
+  },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
