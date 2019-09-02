@@ -1,3 +1,5 @@
+// sends transactions from a single account in a loop, incrementing the nonce locally (not waiting for previous txs to be accepted / mined)
+
 const Web3 = require('web3');
 
 const addr = '0x0102ac5315c1bd986a1da4f1fe1b4bca36fa4667';

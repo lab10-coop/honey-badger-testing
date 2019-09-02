@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "mocha",
-    "keepalive": "node src/keepalive.js"
+    "keepalive-wait": "node src/keepalive-wait.js",
+    "keepalive-nowait": "node src/keepalive-nowait.js"
   },
   "repository": {
     "type": "git",
