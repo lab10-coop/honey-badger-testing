@@ -27,5 +27,8 @@ ADD parity /
 # checkout parity repo
 #RUN git clone https://github.com/lab10-coop/parity-ethereum.git
 
+# volume to contain node config and spec/data/keys
+VOLUME /node
+
 EXPOSE 8080 8545 8180
 ENTRYPOINT ["/parity"]

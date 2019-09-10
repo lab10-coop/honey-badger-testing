@@ -15,10 +15,12 @@ print('Generating Docker config volume folders for {num_nodes} hbbft nodes'.form
 
 generator_dir = '../../parity-ethereum/ethcore/hbbft_engine/hbbft_config_generator'
 
-run_cmd(['cargo', 'run', str(num_nodes)], generator_dir)
+run_cmd(['cargo', 'run', str(num_nodes), "true"], generator_dir)
 
 for i in range(1, num_nodes + 1):
     print("Setting up config for node {}".format(i))
     os.makedirs("containers/node{}/data/network".format(i), exist_ok=True)
     copyfile(generator_dir + "/hbbft_validator_{}.toml".format(i), "containers/node{}/node.toml".format(i))
     copyfile(generator_dir + "/hbbft_validator_key_{}".format(i), "containers/node{}/data/network/key".format(i))
+    copyfile(generator_dir + "/reserved_peers", "containers/node{}/reserved-peers".format(i))
+    copyfile("../../posdao-test-setup/spec/spec.json", "containers/node{}/spec.json".format(i))
