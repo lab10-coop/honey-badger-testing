@@ -1,4 +1,5 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
+WORKDIR /node
 
 # install tools and dependencies
 RUN apt-get -y update && \
