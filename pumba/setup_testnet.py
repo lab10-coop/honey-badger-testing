@@ -25,10 +25,13 @@ run_cmd(cmd, generator_dir)
 for i in range(1, num_nodes + 1):
     print("Setting up config for node {}".format(i))
     os.makedirs("containers/node{}/data/network".format(i), exist_ok=True)
+    os.makedirs("containers/node{}/data/keys/DPoSChain".format(i), exist_ok=True)
     copyfile(generator_dir + "/hbbft_validator_{}.toml".format(i), "containers/node{}/node.toml".format(i))
     copyfile(generator_dir + "/hbbft_validator_key_{}".format(i), "containers/node{}/data/network/key".format(i))
     copyfile(generator_dir + "/reserved-peers", "containers/node{}/reserved-peers".format(i))
     copyfile("../../posdao-test-setup/spec/spec.json", "containers/node{}/spec.json".format(i))
+    copyfile(generator_dir + "/password.txt", "containers/node{}/password.txt".format(i))
+    copyfile(generator_dir + "/hbbft_validator_key_{}.json".format(i), "containers/node{}/data/keys/DPoSChain/hbbft_validator_key.json".format(i))    
     
 # Set up Rpc node
 os.makedirs("containers/rpc_node", exist_ok=True)
