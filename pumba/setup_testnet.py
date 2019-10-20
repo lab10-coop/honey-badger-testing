@@ -13,7 +13,7 @@ def run_cmd(args, cwd=None):
 
 print('Generating Docker config volume folders for {num_nodes} hbbft nodes'.format(num_nodes=num_nodes))
 
-generator_dir = '../../parity-ethereum/ethcore/hbbft_engine/hbbft_config_generator'
+generator_dir = '../../parity-ethereum/ethcore/engines/hbbft/hbbft_config_generator'
 
 cmd = ['cargo', 'run', str(num_nodes), "Docker"]
 if len(sys.argv) > 2:
