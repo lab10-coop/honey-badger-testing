@@ -1,11 +1,7 @@
 #### Install necessary Python dependencies:
 
 ```
-pip install jupyterlab
-pip install numpy
-pip install pandas
-pip install matplotlib
-pip install seaborn
+pip install jupyterlab numpy pandas matplotlib seaborn
 ```
 
 #### Then start the Notebook using:
