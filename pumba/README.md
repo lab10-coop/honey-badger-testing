@@ -38,16 +38,13 @@ If the intent is to run the nodes on dedicated machines the `reserved-peers` fil
 
 Also make sure to adjust the `networks` setting in the node.toml files to make the nodes listen to the public IP addresses
 
-### Build chain spec manually for running keepalive tests
+### Adjust chain spec for running keepalive tests
 
-Note that the `./setup_testnet.py` script already 
+To customize the chain spec file modify the `templates/spec_hbbft.json` file in the `posdao-contracts` repository.
 
-```
-source network-spec
-node scripts/make_spec_hbbft.js
-```
+Note that these modifications need to be done **before** running the `./setup_testnet.py` script.
 
-Add the following two accounts for testing:
+To add the accounts expected by the `keepalive` tests add the following two accounts to the `spec_hbbft.json` template:
 ```
     "0x32e4e4c7c5d1cea5db5f9202a9e4d99e56c91a24": { 
       "balance": "1606938044258990275541962092341162602522202993782792835301376", 
@@ -58,5 +55,3 @@ Add the following two accounts for testing:
       "nonce": "1048576" 
     },
 ```
-
-Copy the resulting `spec_hbbft.json` to the validator and rpc nodes folders and replace their `spec.json` file.
