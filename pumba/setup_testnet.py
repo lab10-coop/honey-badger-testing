@@ -57,4 +57,4 @@ for i in range(1, num_nodes + 1):
 os.makedirs("containers/rpc_node", exist_ok=True)
 copyfile(generator_dir + "/rpc_node.toml", "containers/rpc_node/node.toml")
 copyfile(generator_dir + "/reserved-peers", "containers/rpc_node/reserved-peers")
-copyfile("../../posdao-test-setup/spec/spec.json", "containers/rpc_node/spec.json")
+copyfile(spec_file, "containers/rpc_node/spec.json")
