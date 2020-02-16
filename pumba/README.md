@@ -42,9 +42,9 @@ Also make sure to adjust the `networks` setting in the node.toml files to make t
 
 To customize the chain spec file modify the `templates/spec_hbbft.json` file in the `posdao-contracts` repository.
 
-Note that these modifications need to be done **before** running the `./setup_testnet.py` script.
+Note that these modifications need to be done **before** running the `setup_testnet.py` script.
 
-To add the accounts expected by the `keepalive` tests add the following two accounts to the `spec_hbbft.json` template:
+To add the accounts expected by the `keepalive` tests add them to the accounts section of the `spec_hbbft.json` template:
 ```
     "0x32e4e4c7c5d1cea5db5f9202a9e4d99e56c91a24": { 
       "balance": "1606938044258990275541962092341162602522202993782792835301376", 
