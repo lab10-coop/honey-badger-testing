@@ -1,14 +1,14 @@
 // sends transactions from a single account in a loop, waiting for the nonce to increment at the RPC node
 
-"use strict";                                                                                                                                                                                                
-                                                                                                                                                                                                             
-const Web3 = require('web3');                                                                                                                                                                                
-                                                                                                                                                                                                             
+"use strict";
+
+const Web3 = require('web3');
+
 const addr = '0x0102ac5315c1bd986a1da4f1fe1b4bca36fa4667';
 const privKey = '0xab174fabad1b7290816cbebf3f235af9145f0ee482b0775992dcb04d5e9ad77d';
 
 async function sendTx() {
-        const web3 = new Web3('http://rpc.tau2.artis.network');
+        const web3 = new Web3('http://185.244.194.53:8541');
         //const web3 = new Web3('http://rpc.tau1.artis.network');
         //const web3 = new Web3('http://localhost:8555');
         const nonce = await web3.eth.getTransactionCount(addr);

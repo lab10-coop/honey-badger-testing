@@ -4,9 +4,11 @@
   "description": "A collection of scripts to test the Honey Badger BFT integration in Parity",
   "main": "src/index.js",
   "scripts": {
+    "tsc": "tsc",
     "test": "mocha",
     "keepalive-wait": "node src/keepalive-wait.js",
-    "keepalive-nowait": "node src/keepalive-nowait.js"
+    "keepalive-nowait": "node src/keepalive-nowait.js",
+    "goLive": "npm run tsc && node dist/thomas_playground.js"
   },
   "repository": {
     "type": "git",
@@ -20,13 +22,18 @@
   "author": "dfo@lab10.coop",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "web3": "^1.2.0"
+    "bignumber.js": "^9.0.0",
+    "bip39": "^3.0.2",
+    "ethereumjs-wallet": "^0.6.3",
+    "web3": "^1.2.6",
+    "websocket": "^1.0.31"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-utils": ">=1.4.1",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.0",
-    "mocha": "^6.1.4"
+    "eslint-utils": ">=1.4.1",
+    "mocha": "^6.1.4",
+    "typescript": "^3.8.3"
   }
 }
