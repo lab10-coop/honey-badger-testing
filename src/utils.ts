@@ -20,7 +20,7 @@ export function generateAddressesFromSeed(mnemonic: string, count: number) : Arr
     let wallet = hdwallet.derivePath(wallet_hdpath + i).getWallet();
     let address = "0x" + wallet.getAddress().toString("hex");
     let privateKey = wallet.getPrivateKey().toString("hex");
-    accounts.push({ address: address, privateKey: privateKey });
+    accounts.push({address: address, privateKey: privateKey});
   }
 
   return accounts;

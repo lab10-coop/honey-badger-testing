@@ -2,6 +2,8 @@
 
 A collection of scripts to test the Honey Badger BFT integration in Parity
 
+See: https://github.com/artis-eco/wiki/wiki/Honey-Badger-BFT-Hypothesis-Testing
+
 # Test Scripts
 
 The test scripts are implemented using node.js v10, install and run as usual:
