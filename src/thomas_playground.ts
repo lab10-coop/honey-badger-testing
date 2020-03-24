@@ -3,7 +3,7 @@
 "use strict";
 
 import Web3 from 'web3';
-import {TransactionConfig, TransactionReceipt} from "web3-core";
+import {PromiEvent, TransactionConfig, TransactionReceipt} from "web3-core";
 import { BigNumber } from 'bignumber.js';
 
 
@@ -23,19 +23,21 @@ var myArgs = process.argv.slice(2);
 console.log('args: ', myArgs);
 
 const web3 = new Web3('http://185.244.194.53:8541');
+
+
 //const web3 = new Web3('https://rpc.tau1.artis.network');
 
 //
 //const web3 = new Web3('http://127.0.0.1:8545');
 
-const countOfRecipients = 1;
+const countOfRecipients = 10;
 
 declare interface KeyPair {
   address: string,
   privateKey: string
 }
 
-function generateAddressesFromSeed(mnemonic: string, count: number) {
+function generateAddressesFromSeed(mnemonic: string, count: number) : Array<KeyPair> {
 
   let bip39 = require("bip39");
   let hdkey = require("ethereumjs-wallet/hdkey");
@@ -80,7 +82,7 @@ async function DoSomeStuff() {
 
   //console.log('currentBlockNumber from  local = ', await web3Local.eth.getBlockNumber());
 
-  const nonceBase = await web3.eth.getTransactionCount(addr);
+  let nonceBase = await web3.eth.getTransactionCount(addr);
 
   //going to cache the number of transactions,
   // so the signing process does not
@@ -110,6 +112,13 @@ async function DoSomeStuff() {
 
   console.log(`all Transaction Signatures created`, rawTransactions);
 
+
+  const startDate = Date.now();
+
+  let transactionsConfirmed = 0;
+
+  const confirmationsPromises = new Array<PromiEvent<TransactionReceipt>>(countOfRecipients);
+
   for(let i = 0; i < countOfRecipients; i++) {
     const signedTx = rawTransactions[i];
 
@@ -119,19 +128,42 @@ async function DoSomeStuff() {
           console.error('Error While Sending!', error);
         })
         .once('confirmation', (confNumber: number, receipt: TransactionReceipt) => {
-          console.log(`Receuved Tx on Blockchain: blockNumber: ${receipt.blockNumber}, transactionHash: ${receipt.transactionHash}`);
+          console.log(`Received Tx on Blockchain: blockNumber: ${receipt.blockNumber}, transactionHash: ${receipt.transactionHash}`);
+          transactionsConfirmed++;
         })
         .once('transactionHash', (receipt: string) => {
           console.log(`TransactionHash : ${receipt}`);
         });
+
+    confirmationsPromises[i] = sendResult;
   }
 
 
 
+  console.log(`All Transactions send to the blockchain.`);
+
+  nonceBase = nonceBase + countOfRecipients;
+
+  //sending dummy Transaction
+  /*web3.eth.sendTransaction({
+    from: addr,
+    to: addr,
+    gas: 21000,
+    gasPrice: '100000000000',
+    nonce: nonceBase + 1
+  })*/
+
+  for(let i = 0; i < countOfRecipients; i++) {
+    const promiEvent = confirmationsPromises[i];
+    await promiEvent;
+    console.log(`Confirmed Transaction ${i}`);
+  }
+
+  console.log(`Confirmed all Transactions`);
+
   //console.log('send Result: ', sendResult);
   //const newTargetAddressBalance = await web3.eth.getBalance(addr);
   //console.log('new target address Balance: ', newTargetAddressBalance);
-
 }
 
 DoSomeStuff().then((value) => {
