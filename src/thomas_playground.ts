@@ -5,6 +5,7 @@
 import Web3 from 'web3';
 import {PromiEvent, TransactionConfig, TransactionReceipt} from "web3-core";
 import { BigNumber } from 'bignumber.js';
+import {KeyPair, generateAddressesFromSeed } from './utils'
 
 
 //just a dummy adress to approve that the values get there
@@ -22,39 +23,18 @@ var myArgs = process.argv.slice(2);
 
 console.log('args: ', myArgs);
 
-const web3 = new Web3('http://185.244.194.53:8541');
+//const web3 = new Web3('http://185.244.194.53:8541');
 
 
-//const web3 = new Web3('https://rpc.tau1.artis.network');
+const web3 = new Web3('https://rpc.tau1.artis.network');
 
 //
 //const web3 = new Web3('http://127.0.0.1:8545');
 
 const countOfRecipients = 10;
+//on new network you might want to "feed" all the accounts.
+const transactionValue = '0';
 
-declare interface KeyPair {
-  address: string,
-  privateKey: string
-}
-
-function generateAddressesFromSeed(mnemonic: string, count: number) : Array<KeyPair> {
-
-  let bip39 = require("bip39");
-  let hdkey = require("ethereumjs-wallet/hdkey");
-  let seed = bip39.mnemonicToSeedSync(mnemonic);
-  let hdwallet = hdkey.fromMasterSeed(seed);
-  let wallet_hdpath = "m/44'/60'/0'/0/";
-
-  let accounts = [];
-  for (let i = 0; i < count; i++) {
-    let wallet = hdwallet.derivePath(wallet_hdpath + i).getWallet();
-    let address = "0x" + wallet.getAddress().toString("hex");
-    let privateKey = wallet.getPrivateKey().toString("hex");
-    accounts.push({ address: address, privateKey: privateKey });
-  }
-
-  return accounts;
-}
 
 async function printBalances(addresses: Array<KeyPair>){
   for(let i = 0; i < addresses.length; i++) {
@@ -98,7 +78,7 @@ async function DoSomeStuff() {
       to: addresses[i].address,
       gas: 21000,
       gasPrice: '100000000000',
-      value: '1',
+      value: '1000000000000000000',
       nonce: nonceBase + i,
     };
 

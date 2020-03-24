@@ -8,7 +8,8 @@
     "test": "mocha",
     "keepalive-wait": "node src/keepalive-wait.js",
     "keepalive-nowait": "node src/keepalive-nowait.js",
-    "goLive": "npm run tsc && node dist/thomas_playground.js"
+    "goLive": "npm run tsc && node dist/thomas_playground.js",
+    "runContinousTransactionsSender": "npm run tsc && node dist/runContinousTransactionsSender.js"
   },
   "repository": {
     "type": "git",
