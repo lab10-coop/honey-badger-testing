@@ -11,7 +11,7 @@ console.log('config: ', config);
 const web3 = new Web3(config.networkUrl);
 // web3.eth.transactionConfirmationBlocks = 24;
 
-const sender = new ContinousTransactionsSender(mnemonic, 0, web3, config.continuousSenderInterval, true);
+const sender = new ContinousTransactionsSender(mnemonic, 0, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, true);
 
 
 sender.startSending().then((value) => {
@@ -35,6 +35,4 @@ setTimeout(()=> {
         console.log(exporter.toCSV());
     }, 10000);
 }, config.testDurationMs);
-
-
 

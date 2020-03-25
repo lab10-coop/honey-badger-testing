@@ -1,5 +1,6 @@
 {
   "networkUrl" : "http://185.244.194.53:8541",
-  "continuousSenderInterval": 1000,
-  "testDurationMs" : 10000
+  "continuousSenderIntervalMin": 1000,
+  "continuousSenderIntervalMax": 10000,
+  "testDurationMs" : 60000
 }
