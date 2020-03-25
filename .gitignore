@@ -8,3 +8,4 @@ pumba/containers
 jupyter/.ipynb_checkpoints/
 dist
 .idea
+output

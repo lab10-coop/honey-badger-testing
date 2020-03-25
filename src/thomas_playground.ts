@@ -53,7 +53,7 @@ async function DoSomeStuff() {
 
   //return;
 
-  web3.eth.transactionConfirmationBlocks = 0;
+  //web3.eth.transactionConfirmationBlocks = 0;
   const currentBlockNumber = await web3.eth.getBlockNumber();
 
   console.log('currentBlockNumber from  185.244.194.53:8541 = ', currentBlockNumber);

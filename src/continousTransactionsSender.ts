@@ -4,23 +4,18 @@ import Web3 from 'web3';
 
 // ethereumjs-wallet is a typescript project without types :-o
 const Wallet = require('ethereumjs-wallet');
-import {KeyPair, generateAddressesFromSeed } from './utils'
+import {KeyPair, generateAddressesFromSeed } from './utils';
 import {PromiEvent, TransactionConfig, TransactionReceipt} from "web3-core";
-import {TransactionPerformanceTrack} from './types'
-
-
+import {TransactionPerformanceTrack} from './types';
 
 export class ContinousTransactionsSender {
 
     private currentNonce = 0;
     private currentInternalID = 0;
-
     private address : string;
     private privateKey : string;
-
     private isRunning = false;
-
-    public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>()
+    public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
 
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMs: number, public readonly trackPerformance = true) {
 
@@ -56,17 +51,21 @@ export class ContinousTransactionsSender {
             console.log(`transactionHash ${receipt}`);
         })
         .once('receipt', (receipt => {
-            console.log(`Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
+            const now = Date.now();
+            console.log(`${now} - Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
             if (this.trackPerformance) {
                 const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
-                track.timeReceipt = Date.now();
+                track.timeReceipt = now;
+                track.blockNumber = receipt.blockNumber;
             }
         }))
         .once('confirmation', (confNumber, receipt) => {
-            console.log(`Transaction Confirmation ${confNumber}  - ${receipt.blockNumber} - ${receipt.transactionHash}`);
+            const now = Date.now();
+            console.log(`${now} - Transaction Confirmation ${confNumber}  - ${receipt.blockNumber} - ${receipt.transactionHash}`);
             if (this.trackPerformance) {
                 const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
-                track.timeConfirmed = Date.now();
+                track.timeConfirmed = now;
+                track.blockNumber = receipt.blockNumber; //might overwrite if the block get's mined in another block than it got received
             }
             // we could figure out the confirmation time here be gather the block from the blockchain,
             // and take the value of the blocktime.
@@ -93,6 +92,4 @@ export class ContinousTransactionsSender {
         //throw  new Error(`Stop not implemented yet`);
         this.isRunning = false;
     }
-
-
 }

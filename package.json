@@ -26,6 +26,7 @@
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
     "config": "^3.3.0",
+    "csv-writer": "^1.6.0",
     "ethereumjs-wallet": "^0.6.3",
     "web3": "^1.2.6",
     "websocket": "^1.0.31"
