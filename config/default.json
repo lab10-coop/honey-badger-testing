@@ -1,3 +1,5 @@
 {
-  "networkUrl" : "wss://ws.tau1.artis.network"
+  "networkUrl" : "http://185.244.194.53:8541",
+  "continuousSenderInterval": 1000,
+  "testDurationMs" : 10000
 }

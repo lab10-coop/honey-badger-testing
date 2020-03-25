@@ -6,17 +6,23 @@ import Web3 from 'web3';
 const Wallet = require('ethereumjs-wallet');
 import {KeyPair, generateAddressesFromSeed } from './utils'
 import {PromiEvent, TransactionConfig, TransactionReceipt} from "web3-core";
+import {TransactionPerformanceTrack} from './types'
+
 
 
 export class ContinousTransactionsSender {
 
     private currentNonce = 0;
+    private currentInternalID = 0;
+
     private address : string;
     private privateKey : string;
 
     private isRunning = false;
 
-    public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMs: number) {
+    public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>()
+
+    public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMs: number, public readonly trackPerformance = true) {
 
         const wallets = generateAddressesFromSeed(mnemonic, mnemonicAccountIndex + 1);
         const wallet = wallets[mnemonicAccountIndex];
@@ -39,15 +45,31 @@ export class ContinousTransactionsSender {
         };
 
         this.currentNonce = this.currentNonce + 1;
+        this.currentInternalID++;
         const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey);
+
+        if (this.trackPerformance) {
+            this.currentPerformanceTracks.set(signedTransaction.transactionHash!, new TransactionPerformanceTrack(this.currentInternalID, signedTransaction.transactionHash!, Date.now()));
+        }
+
         await this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!).once('transactionHash', (receipt: string) => {
             console.log(`transactionHash ${receipt}`);
         })
         .once('receipt', (receipt => {
             console.log(`Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
+            if (this.trackPerformance) {
+                const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
+                track.timeReceipt = Date.now();
+            }
         }))
         .once('confirmation', (confNumber, receipt) => {
             console.log(`Transaction Confirmation ${confNumber}  - ${receipt.blockNumber} - ${receipt.transactionHash}`);
+            if (this.trackPerformance) {
+                const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
+                track.timeConfirmed = Date.now();
+            }
+            // we could figure out the confirmation time here be gather the block from the blockchain,
+            // and take the value of the blocktime.
         })
         .once('error', (error => {
             console.log(`Error while sending Transaction: `, error);
@@ -71,4 +93,6 @@ export class ContinousTransactionsSender {
         //throw  new Error(`Stop not implemented yet`);
         this.isRunning = false;
     }
+
+
 }
