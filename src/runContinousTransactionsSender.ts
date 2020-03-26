@@ -1,17 +1,15 @@
 
+import { ConfigManager } from './configManager';
 import { ContinousTransactionsSender } from './continousTransactionsSender';
 import { TransactionPerformanceTrackExporter } from './transactionPerformanceTrackExporter';
 import Web3 from 'web3';
 
-const mnemonic = "easy stone plastic alley faith duty away notice provide sponsor amount excuse grain scheme symbol";
 
-const config = require('config');
-console.log('config: ', config);
-
-const web3 = new Web3(config.networkUrl);
+const web3 = ConfigManager.getWeb3();
+const config = ConfigManager.getConfig();
 // web3.eth.transactionConfirmationBlocks = 24;
 
-const sender = new ContinousTransactionsSender(mnemonic, 0, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, true);
+const sender = new ContinousTransactionsSender(config.mnemonic, config.mnemonicAccountIndex, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, true);
 
 
 sender.startSending().then((value) => {
@@ -20,9 +18,8 @@ sender.startSending().then((value) => {
     console.error(`runContinousTransactionsSender: Error while sending: `, reason);
 }));
 
+
 setTimeout(()=> {
-
-
     sender.stop();
     console.log('stopped sending transactions');
     console.log('Waiting for 10s last transactions');
@@ -34,5 +31,5 @@ setTimeout(()=> {
         const exporter = new TransactionPerformanceTrackExporter(performanceTracks);
         console.log(exporter.toCSV());
     }, 10000);
-}, config.testDurationMs);
+},config.testDurationMs);
 

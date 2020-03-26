@@ -17,7 +17,7 @@ export class ContinousTransactionsSender {
     private isRunning = false;
     public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
 
-    public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly trackPerformance = true,) {
+    public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true,) {
 
         const wallets = generateAddressesFromSeed(mnemonic, mnemonicAccountIndex + 1);
         const wallet = wallets[mnemonicAccountIndex];
@@ -30,12 +30,16 @@ export class ContinousTransactionsSender {
 
     private async sendTx() {
 
+        if (this.calcNonceEveryTurn) {
+            this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
+        }
+
         const tx: TransactionConfig = {
             from: this.address,
             to: this.address,
             value: '0',
             gas: '21000',
-            gasPrice: '1000000000',
+            gasPrice: '1000000002',
             nonce: this.currentNonce
         };
 

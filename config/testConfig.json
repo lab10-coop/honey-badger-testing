@@ -1,10 +1,9 @@
 {
-
-  "networkUrl" : "http://185.244.194.53:8541",
+  "networkUrl": "http://185.244.194.53:8541",
   "continuousSenderIntervalMin": 1000,
-  "continuousSenderIntervalMax": 10000,
-  "testDurationMs" : 60000,
+  "continuousSenderIntervalMax": 1000,
+  "testDurationMs": 10000,
   "mnemonic": "easy stone plastic alley faith duty away notice provide sponsor amount excuse grain scheme symbol",
-  "mnemonicAccountIndex" : 1,
+  "mnemonicAccountIndex" : 0,
   "calcNonceEveryTurn" : false
 }

@@ -64,3 +64,12 @@ To be compatible with both local and Docker nodes we have to use an appropriate 
 For the sake of simplicity we choose a single directory containing all configs and data to be mounted into a Docker volume.
 
 Caveat: Filesystem performance inside of a Docker volume may be significantly slower than inside the container. We may re-consider the approach of sharing the "data" folder through a Docker volume for that reason.
+
+
+# Performance Tests
+
+The NPM - Typescript Package contains Stress and Performance tests.
+
+
+## Config Guide
+

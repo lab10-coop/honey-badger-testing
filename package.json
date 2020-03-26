@@ -9,7 +9,8 @@
     "keepalive-wait": "node src/keepalive-wait.js",
     "keepalive-nowait": "node src/keepalive-nowait.js",
     "goLive": "npm run tsc && node dist/thomas_playground.js",
-    "continous": "npm run tsc && node dist/runContinousTransactionsSender.js"
+    "continous": "npm run tsc && node dist/runContinousTransactionsSender.js",
+    "pendingTransactions": "npm run tsc && node dist/runShowPendingTransactions.js"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,13 @@
   "author": "dfo@lab10.coop",
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@types/underscore": "^1.9.4",
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
     "config": "^3.3.0",
     "csv-writer": "^1.6.0",
     "ethereumjs-wallet": "^0.6.3",
+    "underscore": "^1.9.2",
     "web3": "^1.2.6",
     "websocket": "^1.0.31"
   },
