@@ -17,6 +17,10 @@ export class ContinousTransactionsSender {
     private isRunning = false;
     public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
 
+    //reentrancy protection
+    //private isSending : Promise<void> | undefined;
+
+    private isSending = false;
 
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true,) {
 
@@ -30,6 +34,12 @@ export class ContinousTransactionsSender {
     }
 
     private async sendTx() {
+
+        while(this.isSending){
+
+        }
+
+        this.isSending = true;
 
         if (this.calcNonceEveryTurn) {
             this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
@@ -49,10 +59,18 @@ export class ContinousTransactionsSender {
         const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey);
 
         if (this.trackPerformance) {
+
+            const existingEntry = this.currentPerformanceTracks.get(signedTransaction.transactionHash!);
+            if (existingEntry != undefined){
+                console.error(`Detected a case where reentrancy detection failed!! tx: ${signedTransaction.transactionHash}`,tx, existingEntry);
+                this.isSending = false;
+                return;
+            }
+
             this.currentPerformanceTracks.set(signedTransaction.transactionHash!, new TransactionPerformanceTrack(this.currentInternalID, signedTransaction.transactionHash!, Date.now(), tx));
         }
 
-        await this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!).once('transactionHash', (receipt: string) => {
+        this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!).once('transactionHash', (receipt: string) => {
             console.log(`transactionHash ${receipt}`);
         })
         .once('receipt', (receipt => {
@@ -76,8 +94,9 @@ export class ContinousTransactionsSender {
             // and take the value of the blocktime.
         })
         .once('error', (error => {
-            console.log(`Error while sending Transaction: `, error);
+            console.log(`Error while sending Transaction: ${signedTransaction.transactionHash!}`, error);
         }))
+        this.isSending = false;
     }
 
     private getRandomWaitInterval() {
@@ -90,11 +109,21 @@ export class ContinousTransactionsSender {
         this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
         this.isRunning = true;
 
-        const executeFunction = () => {
+        // :-o a async recursive function with reentrancy syncronization :-o
+
+        const executeFunction = async () => {
             if (this.isRunning) {
                 //shedule next function:
                 setTimeout(executeFunction, this.getRandomWaitInterval());
+
                 this.sendTx();
+                // if (this.isSending) {
+                //    await this.isSending;
+                // }
+                // this.isSending = this.sendTx();
+
+                // await this.isSending;
+                // this.isSending = undefined;
             }
         };
 

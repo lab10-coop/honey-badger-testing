@@ -26,10 +26,11 @@ setTimeout(()=> {
 
     // wait further 10 seconds. some transactions might still get validated.
     setTimeout(()=> {
-        console.log(`performance Tests:`,sender.currentPerformanceTracks);
+        // console.log(`performance Tests:`,sender.currentPerformanceTracks);
         const performanceTracks =  Array.from(sender.currentPerformanceTracks.values());
         const exporter = new TransactionPerformanceTrackExporter(performanceTracks);
         console.log(exporter.toCSV());
+        process.exit(0);
     }, 10000);
 },config.testDurationMs);
 

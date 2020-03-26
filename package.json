@@ -10,7 +10,10 @@
     "keepalive-nowait": "node src/keepalive-nowait.js",
     "goLive": "npm run tsc && node dist/thomas_playground.js",
     "continous": "npm run tsc && node dist/runContinousTransactionsSender.js",
-    "pendingTransactions": "npm run tsc && node dist/runShowPendingTransactions.js"
+    "pendingTransactions": "npm run tsc && node dist/runShowPendingTransactions.js",
+    "onceASecond1": "NODE_ENV=onceASecond1 node dist/runContinousTransactionsSender.js",
+    "onceASecond2": "NODE_ENV=onceASecond2 node dist/runContinousTransactionsSender.js",
+    "testboth": "npm-run-all --parallel onceASecond1 onceASecond2"
   },
   "repository": {
     "type": "git",
@@ -40,6 +43,7 @@
     "eslint-plugin-import": "^2.18.0",
     "eslint-utils": ">=1.4.1",
     "mocha": "^6.1.4",
+    "npm-run-all": "^4.1.5",
     "typescript": "^3.8.3"
   }
 }
