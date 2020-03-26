@@ -17,6 +17,7 @@ export class ContinousTransactionsSender {
     private isRunning = false;
     public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
 
+
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true,) {
 
         const wallets = generateAddressesFromSeed(mnemonic, mnemonicAccountIndex + 1);
@@ -48,7 +49,7 @@ export class ContinousTransactionsSender {
         const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey);
 
         if (this.trackPerformance) {
-            this.currentPerformanceTracks.set(signedTransaction.transactionHash!, new TransactionPerformanceTrack(this.currentInternalID, signedTransaction.transactionHash!, Date.now()));
+            this.currentPerformanceTracks.set(signedTransaction.transactionHash!, new TransactionPerformanceTrack(this.currentInternalID, signedTransaction.transactionHash!, Date.now(), tx));
         }
 
         await this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!).once('transactionHash', (receipt: string) => {

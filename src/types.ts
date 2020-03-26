@@ -1,9 +1,9 @@
-
+import {TransactionConfig} from "web3-core";
 
 
 export class TransactionPerformanceTrack {
 
-    constructor(public internalTxID : number, public transactionHash : string, public timeSend : number) {
+    constructor(public internalTxID : number, public transactionHash : string, public timeSend : number, public transactionConfig: TransactionConfig) {
     }
 
     // internal Transaction ID: only for identifieying transactions within this performance test session
@@ -25,5 +25,6 @@ export class TransactionPerformanceTrack {
 
         return  this.timeConfirmed - this.timeSend;
     }
+
 }
 
