@@ -6,5 +6,6 @@
   "testDurationMs" : 300000,
   "mnemonic": "easy stone plastic alley faith duty away notice provide sponsor amount excuse grain scheme symbol",
   "mnemonicAccountIndex" : 1,
-  "calcNonceEveryTurn" : false
+  "calcNonceEveryTurn" : false,
+  "trackPerformance" : true
 }

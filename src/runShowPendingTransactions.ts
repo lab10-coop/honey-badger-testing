@@ -9,10 +9,8 @@ import * as _ from  'underscore';
 
 function transactionsToString(transactions: Array<Transaction>) {
 
-    _.groupBy([1.3, 2.1, 2.4], function(num){ return Math.floor(num); });
     const groupyByFrom : _.Dictionary<Transaction[]> = _.groupBy(transactions, function(x){ return x.from });
     console.log(groupyByFrom);
-
 }
 
 async function start() {

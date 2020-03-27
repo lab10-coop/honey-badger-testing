@@ -11,7 +11,8 @@ export interface TestConfig {
     testDurationMs : number,
     mnemonic: string,
     mnemonicAccountIndex: number,
-    calcNonceEveryTurn: boolean
+    calcNonceEveryTurn: boolean,
+    trackPerformance: boolean
 }
 
 

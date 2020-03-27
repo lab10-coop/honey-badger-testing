@@ -2,21 +2,24 @@
 import { ConfigManager } from './configManager';
 import { ContinuousTransactionsSender } from './continuousTransactionsSender';
 import { TransactionPerformanceTrackExporter } from './transactionPerformanceTrackExporter';
+import { LogFileManager } from "./logFileManager";
 import Web3 from 'web3';
 
+
+console.log('NODE_ENV: ', process.env.NODE_ENV);
 
 const web3 = ConfigManager.getWeb3();
 const config = ConfigManager.getConfig();
 // web3.eth.transactionConfirmationBlocks = 24;
 
-const sender = new ContinuousTransactionsSender(config.mnemonic, config.mnemonicAccountIndex, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, config.calcNonceEveryTurn);
+const sender = new ContinuousTransactionsSender(config.mnemonic, config.mnemonicAccountIndex, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, config.calcNonceEveryTurn, config.trackPerformance);
 
 
-sender.startSending().then((value) => {
+sender.startSending().then((value: void) => {
     console.log(`started ContinuousTransactionsSender`);
-}).catch((reason => {
+}).catch((reason : any) => {
     console.error(`runContinuousTransactionsSender: Error while sending: `, reason);
-}));
+});
 
 
 setTimeout(()=> {
@@ -29,7 +32,9 @@ setTimeout(()=> {
         // console.log(`performance Tests:`,sender.currentPerformanceTracks);
         const performanceTracks =  Array.from(sender.currentPerformanceTracks.values());
         const exporter = new TransactionPerformanceTrackExporter(performanceTracks);
-        console.log(exporter.toCSV());
+        const csvResult = exporter.toCSV();
+        console.log(csvResult);
+        LogFileManager.writeCSVOutput(csvResult);
         process.exit(0);
     }, 10000);
 },config.testDurationMs);

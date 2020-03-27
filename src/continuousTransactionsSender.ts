@@ -17,7 +17,7 @@ export class ContinuousTransactionsSender {
     private isRunning = false;
     public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
 
-    public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true,) {
+    public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true, public readonly batchSize: number | undefined = 1) {
 
         const wallets = generateAddressesFromSeed(mnemonic, mnemonicAccountIndex + 1);
         const wallet = wallets[mnemonicAccountIndex];
@@ -32,7 +32,6 @@ export class ContinuousTransactionsSender {
 
         if (this.calcNonceEveryTurn) {
             this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
-            console.error(`calcNonce  ${this.calcNonceEveryTurn} ${this.currentNonce }`);
         }
 
         const tx: TransactionConfig = {
@@ -52,9 +51,8 @@ export class ContinuousTransactionsSender {
         if (this.trackPerformance) {
 
             const existingEntry = this.currentPerformanceTracks.get(signedTransaction.transactionHash!);
-            if (existingEntry != undefined){
-                console.error(`Detected a case where reentrancy detection failed!! tx: ${signedTransaction.transactionHash}`,tx, existingEntry);
-                return;
+            if (existingEntry != undefined) {
+                console.error(`Detected a case where the same transaction get send twice!! tx: ${signedTransaction.transactionHash}`,tx, existingEntry);
             }
 
             this.currentPerformanceTracks.set(signedTransaction.transactionHash!, new TransactionPerformanceTrack(this.currentInternalID, signedTransaction.transactionHash!, Date.now(), tx));

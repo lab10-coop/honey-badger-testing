@@ -1,11 +1,16 @@
 
+
+
 import * as _ from 'underscore';
+
+import { LogFileManager } from './logFileManager';
+
 
 var fs = require('fs');
 
 
 console.log('current Dir: ',  process.cwd());
-const outPutDir = process.cwd() + '/output';
+const outPutDir = LogFileManager.getOutputDirectory();
 
 const  dt = new Date();
 
@@ -32,8 +37,8 @@ function getFilesToMove(directory: string) {
         const file =  ls[i];
 
         if (!file.startsWith('.') //ignore all . files, we also create with this tool. we don't create . files..
-            && (file.endsWith('.transactions.csv')
-                || file.endsWith('.transactions.json'))){
+            && (file.endsWith( LogFileManager.getFileExtensionCSV())
+                || file.endsWith(LogFileManager.getFileExtensionJSON()))){
             filesToMove.push(file);
         }
     }
@@ -47,10 +52,16 @@ if (filesToMove.length > 0) {
 
     for(let i = 0; i < filesToMove.length; i++) {
         const fileToMove = filesToMove[i];
-        fs.renameSync(`${outPutDir}/${fileToMove}`, `${backupDir}/${fileToMove}`);
+        const oldPath = `${outPutDir}/${fileToMove}`;
+        const newPath = `${backupDir}/${fileToMove}`;
+        console.log(`renaming: ${oldPath} -> ${newPath}`);
+        fs.renameSync(oldPath, newPath);
     }
+    console.log(`Backed up old CSV Files to ${backupDir}`);
+} else {
+    console.log(`Nothing found to backup.`);
 }
 
-console.log(`Backed up old CSV Files to ${backupDir}`);
+
 
 
