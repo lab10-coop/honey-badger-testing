@@ -17,11 +17,6 @@ export class ContinousTransactionsSender {
     private isRunning = false;
     public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
 
-    //reentrancy protection
-    //private isSending : Promise<void> | undefined;
-
-    private isSending = false;
-
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true,) {
 
         const wallets = generateAddressesFromSeed(mnemonic, mnemonicAccountIndex + 1);
@@ -33,13 +28,7 @@ export class ContinousTransactionsSender {
         //this.currentNonce = web3.eth.getTransactionCount();
     }
 
-    private async sendTx() {
-
-        while(this.isSending){
-
-        }
-
-        this.isSending = true;
+    private async sendTx(nonce: number) {
 
         if (this.calcNonceEveryTurn) {
             this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
@@ -54,7 +43,6 @@ export class ContinousTransactionsSender {
             nonce: this.currentNonce
         };
 
-        this.currentNonce = this.currentNonce + 1;
         this.currentInternalID++;
         const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey);
 
@@ -63,7 +51,6 @@ export class ContinousTransactionsSender {
             const existingEntry = this.currentPerformanceTracks.get(signedTransaction.transactionHash!);
             if (existingEntry != undefined){
                 console.error(`Detected a case where reentrancy detection failed!! tx: ${signedTransaction.transactionHash}`,tx, existingEntry);
-                this.isSending = false;
                 return;
             }
 
@@ -96,7 +83,6 @@ export class ContinousTransactionsSender {
         .once('error', (error => {
             console.log(`Error while sending Transaction: ${signedTransaction.transactionHash!}`, error);
         }))
-        this.isSending = false;
     }
 
     private getRandomWaitInterval() {
@@ -114,16 +100,10 @@ export class ContinousTransactionsSender {
         const executeFunction = async () => {
             if (this.isRunning) {
                 //shedule next function:
+
+                this.currentNonce++;
                 setTimeout(executeFunction, this.getRandomWaitInterval());
-
-                this.sendTx();
-                // if (this.isSending) {
-                //    await this.isSending;
-                // }
-                // this.isSending = this.sendTx();
-
-                // await this.isSending;
-                // this.isSending = undefined;
+                this.sendTx(this.currentNonce);
             }
         };
 

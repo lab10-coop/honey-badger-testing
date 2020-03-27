@@ -31,6 +31,8 @@ export class ConfigManager {
         const result = new Web3(config.networkUrl);
         return result;
     }
+
+
 }
 
 
