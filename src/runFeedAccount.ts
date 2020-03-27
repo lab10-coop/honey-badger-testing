@@ -8,14 +8,16 @@ import {KeyPair, generateAddressesFromSeed } from './utils';
 
 import Web3 from 'web3';
 import {PromiEvent, SignedTransaction, TransactionConfig, TransactionReceipt} from "web3-core";
+import BigNumber from "bignumber.js";
 
 
 const config = ConfigManager.getConfig();
 const web3 = ConfigManager.getWeb3();
 
 //const privKey = '0xab174fabad1b7290816cbebf3f235af9145f0ee482b0775992dcb04d5e9ad77d';
+//const privKey = '0xA2540F5D61616E3DC7957F153F231A47BD8283C31719FB52608952324C3B29F3';
+const privKey = '0x9cec6eb31163deeceaddecf216372ce5386a523497fc429045bbeac3628e1438';
 
-const privKey = '0xA2540F5D61616E3DC7957F153F231A47BD8283C31719FB52608952324C3B29F3';
 
 const mnemonic = config.mnemonic;
 
@@ -30,12 +32,16 @@ const valueToFeed = '100000000000000000000';
 //on new network you might want to "feed" all the accounts.
 const transactionValue = '0';
 
-async function printBalances(addresses: Array<KeyPair>){
+async function getBalances(addresses: Array<KeyPair>){
+    const balances = new Map<string, BigNumber>();
+
     for(let i = 0; i < addresses.length; i++) {
         const a = addresses[i].address;
         const balance = await web3.eth.getBalance(a);
         console.log(i + ': ' + a + ' : ' + balance);
+        balances.set(a, new BigNumber(balance));
     }
+    return balances;
 };
 
 async function runFeed() {
@@ -43,8 +49,7 @@ async function runFeed() {
     const addresses = generateAddressesFromSeed(mnemonic, countOfRecipients);
 
     console.log('Balances before run:');
-    await printBalances(addresses);
-
+    await getBalances(addresses);
 
     //web3.eth.transactionConfirmationBlocks = 0;
     const currentBlockNumber = await web3.eth.getBlockNumber();
@@ -78,29 +83,25 @@ async function runFeed() {
         };
 
         console.log(`preparing TX: `, txObj);
-
-
-
         const signedTx = await web3.eth.accounts.signTransaction(txObj, privKey);
         console.log('got signed Transaction: ', signedTx.rawTransaction);
-
         rawTransactions[i] = signedTx!;
     }
 
     console.log(`all Transaction Signatures created`, rawTransactions);
 
 
-    const startDate = Date.now();
+    //const startDate = Date.now();
 
     let transactionsConfirmed = 0;
 
-    const confirmationsPromises = new Array<PromiEvent<TransactionReceipt>>(countOfRecipients);
+    //const confirmationsPromises = new Array<PromiEvent<TransactionReceipt>>(countOfRecipients);
 
     for(let i = 0; i < countOfRecipients; i++) {
         const signedTx = rawTransactions[i];
 
         console.log(`sending: ${i}`, signedTx);
-        const sendResult = web3.eth.sendSignedTransaction(signedTx.rawTransaction!)
+        const sendResult = await web3.eth.sendSignedTransaction(signedTx.rawTransaction!)
             .once('error', (error: Error) => {
                 console.error(`Error While Sending! ${i} ${signedTx.messageHash}`, error);
             })
@@ -112,7 +113,7 @@ async function runFeed() {
                 console.log(`TransactionHash : ${receipt}`);
             });
 
-        confirmationsPromises[i] = sendResult;
+        //confirmationsPromises[i] = sendResult;
     }
 
 
@@ -130,11 +131,11 @@ async function runFeed() {
       nonce: nonceBase + 1
     })*/
 
-    for(let i = 0; i < countOfRecipients; i++) {
-        const promiEvent = confirmationsPromises[i];
-        await promiEvent;
-        console.log(`Confirmed Transaction ${i}`);
-    }
+    //for(let i = 0; i < countOfRecipients; i++) {
+    //    const promiEvent = confirmationsPromises[i];
+    //    await promiEvent;
+    //    console.log(`Confirmed Transaction ${i}`);
+    // }
 
     console.log(`Confirmed all Transactions`);
 

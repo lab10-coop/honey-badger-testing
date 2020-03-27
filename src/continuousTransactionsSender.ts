@@ -8,7 +8,7 @@ import {KeyPair, generateAddressesFromSeed } from './utils';
 import {PromiEvent, TransactionConfig, TransactionReceipt} from "web3-core";
 import {TransactionPerformanceTrack} from './types';
 
-export class ContinousTransactionsSender {
+export class ContinuousTransactionsSender {
 
     private currentNonce = 0;
     private currentInternalID = 0;
@@ -32,6 +32,7 @@ export class ContinousTransactionsSender {
 
         if (this.calcNonceEveryTurn) {
             this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
+            console.error(`calcNonce  ${this.calcNonceEveryTurn} ${this.currentNonce }`);
         }
 
         const tx: TransactionConfig = {
@@ -39,11 +40,13 @@ export class ContinousTransactionsSender {
             to: this.address,
             value: '0',
             gas: '21000',
-            gasPrice: '1000000002',
+            gasPrice: '1000000000',
             nonce: this.currentNonce
         };
 
         this.currentInternalID++;
+        this.currentNonce++;
+
         const signedTransaction = await this.web3.eth.accounts.signTransaction(tx, this.privateKey);
 
         if (this.trackPerformance) {
@@ -101,7 +104,7 @@ export class ContinousTransactionsSender {
             if (this.isRunning) {
                 //shedule next function:
 
-                this.currentNonce++;
+
                 setTimeout(executeFunction, this.getRandomWaitInterval());
                 this.sendTx(this.currentNonce);
             }

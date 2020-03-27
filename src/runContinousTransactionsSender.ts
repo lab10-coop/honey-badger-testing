@@ -1,6 +1,6 @@
 
 import { ConfigManager } from './configManager';
-import { ContinousTransactionsSender } from './continousTransactionsSender';
+import { ContinuousTransactionsSender } from './continuousTransactionsSender';
 import { TransactionPerformanceTrackExporter } from './transactionPerformanceTrackExporter';
 import Web3 from 'web3';
 
@@ -9,13 +9,13 @@ const web3 = ConfigManager.getWeb3();
 const config = ConfigManager.getConfig();
 // web3.eth.transactionConfirmationBlocks = 24;
 
-const sender = new ContinousTransactionsSender(config.mnemonic, config.mnemonicAccountIndex, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, true);
+const sender = new ContinuousTransactionsSender(config.mnemonic, config.mnemonicAccountIndex, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, config.calcNonceEveryTurn);
 
 
 sender.startSending().then((value) => {
-    console.log(`started ContinousTransactionsSender`);
+    console.log(`started ContinuousTransactionsSender`);
 }).catch((reason => {
-    console.error(`runContinousTransactionsSender: Error while sending: `, reason);
+    console.error(`runContinuousTransactionsSender: Error while sending: `, reason);
 }));
 
 

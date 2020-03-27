@@ -9,12 +9,14 @@
     "keepalive-wait": "node src/keepalive-wait.js",
     "keepalive-nowait": "node src/keepalive-nowait.js",
     "goLive": "npm run tsc && node dist/thomas_playground.js",
-    "continous": "ts-node src/runContinousTransactionsSender.ts",
+    "continuous": "ts-node src/runContinousTransactionsSender.ts",
     "pendingTransactions": "ts-node src/runShowPendingTransactions.ts",
     "onceASecond1": "NODE_ENV=onceASecond1 ts-node src/runContinousTransactionsSender.ts",
     "onceASecond2": "NODE_ENV=onceASecond2 ts-node src/runContinousTransactionsSender.ts",
+    "baseline10tx": "NODE_ENV=test5m_latency_baseline10tx ts-node src/runContinousTransactionsSender.ts",
     "testboth": "npm-run-all --parallel onceASecond1 onceASecond2",
-    "feedAccount": "ts-node src/runFeedAccount.ts"
+    "feedAccounts": "ts-node src/runFeedAccount.ts",
+    "analyseTransaction": "ts-node src/runAnalyseTransaction.ts"
   },
   "repository": {
     "type": "git",
