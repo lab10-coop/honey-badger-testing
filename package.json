@@ -16,7 +16,10 @@
     "baseline10tx": "NODE_ENV=test5m_latency_baseline10tx ts-node src/runContinousTransactionsSender.ts",
     "testboth": "npm-run-all --parallel onceASecond1 onceASecond2",
     "feedAccounts": "ts-node src/runFeedAccount.ts",
-    "analyseTransaction": "ts-node src/runAnalyseTransaction.ts"
+    "arguments" : "ts-node src/runArguments.ts",
+    "args": "npm-run-all --parallel arguments arguments --$(date)",
+    "analyseTransaction": "ts-node src/runAnalyseTransaction.ts",
+    "backup" : "ts-node src/runBackupOldOutput.ts"
   },
   "repository": {
     "type": "git",

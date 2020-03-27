@@ -2,7 +2,7 @@
   "networkUrl" : "http://localhost:8540",
   "continuousSenderIntervalMin": 100,
   "continuousSenderIntervalMax": 100,
-  "testDurationMs" : 10000,
+  "testDurationMs" :  300000,
   "mnemonic": "index photo humble announce organ flush winter keep blush mouse spoil panel sustain trade you",
   "mnemonicAccountIndex" : 1,
   "calcNonceEveryTurn" : false
