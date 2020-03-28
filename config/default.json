@@ -1,6 +1,6 @@
 {
 
-  "networkUrl" : "http://localhost:8540",
+  "networkUrl" : "ws://185.244.194.56:9542",
   "continuousSenderIntervalMin": 3000,
   "continuousSenderIntervalMax": 3000,
   "testDurationMs" : 10000,

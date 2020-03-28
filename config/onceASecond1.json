@@ -1,6 +1,6 @@
 {
 
-  "networkUrl" : "http://185.244.194.53:8541",
+  "networkUrl" : "ws://185.244.194.53:9541",
   "continuousSenderIntervalMin": 1000,
   "continuousSenderIntervalMax": 1000,
   "testDurationMs" : 300000,
