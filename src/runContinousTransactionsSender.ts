@@ -35,7 +35,7 @@ setTimeout(()=> {
         const csvResult = exporter.toCSV();
         console.log(csvResult);
         LogFileManager.writeCSVOutput(csvResult);
+        LogFileManager.writeJSONOutput(JSON.stringify(performanceTracks));
         process.exit(0);
     }, 10000);
-},config.testDurationMs);
-
+}, config.testDurationMs);

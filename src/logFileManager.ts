@@ -28,7 +28,7 @@ export class LogFileManager {
     }
 
     public static ensureOutputPath() {
-        if (fs.existsSync(this.getOutputDirectory()))
+        if (!fs.existsSync(this.getOutputDirectory()))
         {
             fs.mkdirSync(this.getOutputDirectory());
         }
