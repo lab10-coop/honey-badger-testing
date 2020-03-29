@@ -11,15 +11,18 @@
     "goLive": "npm run tsc && node dist/thomas_playground.js",
     "continuous": "ts-node src/runContinousTransactionsSender.ts",
     "pendingTransactions": "ts-node src/runShowPendingTransactions.ts",
-    "onceASecond1": "NODE_ENV=onceASecond1 ts-node src/runContinousTransactionsSender.ts",
-    "onceASecond2": "NODE_ENV=onceASecond2 ts-node src/runContinousTransactionsSender.ts",
-    "baseline10tx": "NODE_ENV=test5m_latency_baseline10tx ts-node src/runContinousTransactionsSender.ts",
+    "t_onceASecond1": "NODE_ENV=onceASecond1 ts-node src/runContinousTransactionsSender.ts",
+    "t_onceASecond2": "NODE_ENV=onceASecond2 ts-node src/runContinousTransactionsSender.ts",
+    "t_latency_5m_baseline10tx": "NODE_ENV=latency_5m_baseline10tx ts-node src/runContinousTransactionsSender.ts",
+    "t_latency_5m_single_transactions": "NODE_ENV=latency_5m_single_transactions ts-node src/runContinousTransactionsSender.ts",
     "testboth": "npm-run-all --parallel onceASecond1 onceASecond2",
     "feedAccounts": "ts-node src/runFeedAccount.ts",
     "arguments" : "ts-node src/runArguments.ts",
     "args": "npm-run-all --parallel arguments arguments --$(date)",
     "analyseTransaction": "ts-node src/runAnalyseTransaction.ts",
-    "backup" : "ts-node src/runBackupOldOutput.ts"
+    "backup" : "ts-node src/runBackupOldOutput.ts",
+    "latency1": "npm-run-all t_latency_5m_single_transactions --sequential backup",
+    "latency2": "npm-run-all --parallel t_latency_5m_baseline10tx t_latency_5m_single_transactions --sequential backup"
   },
   "repository": {
     "type": "git",
