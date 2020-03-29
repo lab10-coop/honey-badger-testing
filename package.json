@@ -15,6 +15,7 @@
     "t_onceASecond2": "NODE_ENV=onceASecond2 ts-node src/runContinousTransactionsSender.ts",
     "t_latency_5m_baseline10tx": "NODE_ENV=latency_5m_baseline10tx ts-node src/runContinousTransactionsSender.ts",
     "t_latency_5m_single_transactions": "NODE_ENV=latency_5m_single_transactions ts-node src/runContinousTransactionsSender.ts",
+    "t_throughput_single": "NODE_ENV=throughput_single ts-node src/runContinousTransactionsSender.ts",
     "testboth": "npm-run-all --parallel onceASecond1 onceASecond2",
     "feedAccounts": "ts-node src/runFeedAccount.ts",
     "arguments" : "ts-node src/runArguments.ts",
@@ -22,7 +23,9 @@
     "analyseTransaction": "ts-node src/runAnalyseTransaction.ts",
     "backup" : "ts-node src/runBackupOldOutput.ts",
     "latency1": "npm-run-all --sequential backup t_latency_5m_single_transactions --sequential backup",
-    "latency2": "npm-run-all --sequential backup --parallel t_latency_5m_baseline10tx t_latency_5m_single_transactions --sequential backup"
+    "latency2": "npm-run-all --sequential backup --parallel t_latency_5m_baseline10tx t_latency_5m_single_transactions --sequential backup",
+    "throughput1": "npm-run-all backup throughput_single backup"
+    
   },
   "repository": {
     "type": "git",
