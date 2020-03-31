@@ -16,7 +16,7 @@
     "t_latency_5m_baseline10tx": "NODE_ENV=latency_5m_baseline10tx ts-node src/runContinousTransactionsSender.ts",
     "t_latency_5m_single_transactions": "NODE_ENV=latency_5m_single_transactions ts-node src/runContinousTransactionsSender.ts",
     "t_throughput_single": "NODE_ENV=throughput_single ts-node src/runContinousTransactionsSender.ts",
-    "testboth": "npm-run-all --parallel onceASecond1 onceASecond2",
+    "testboth": "npm-run-all  --sequential backup --parallel t_onceASecond1 t_onceASecond2  --sequential backup",
     "feedAccounts": "ts-node src/runFeedAccount.ts",
     "arguments" : "ts-node src/runArguments.ts",
     "args": "npm-run-all --parallel arguments arguments --$(date)",
