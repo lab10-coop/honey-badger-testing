@@ -17,52 +17,14 @@ export class TransactionPerformanceTrackExporter {
 
     public toCSV() : string {
 
-        //const stringifier = createArrayCsvStringifier({});
-        //const strArray = ['Hello'];
-        //const stringifier = createObjectCsvWriter({ header: [] });
-
-
-        //stringifier.stringifyRecords(this.performanceTracks);
-
-        //let data = [][]
-        //stringifier.stringifyRecords()
-
-/*
-        const csvWriter = createObjectCsvWriter({
-            path: '/home/sn/lab10/honey-badger-testing/output/file.csv',
-            header: [
-                {id: 'name', title: 'NAME'},
-                {id: 'lang', title: 'LANGUAGE'}
-            ]
-        });
-
-        const records = [
-            {name: 'Bob',  lang: 'French, English'},
-            {name: 'Mary', lang: 'English'}
-        ];
-
-        csvWriter.writeRecords(records)       // returns a promise
-            .then(() => {
-                console.log('...Done');
-            });
-*/
-
-
         const createCsvStringifier = require('csv-writer').createObjectCsvStringifier;
         const csvStringifier = createCsvStringifier({
             alwaysQuote: true,
-            header: [
-                {id: 'internalTxID', title: 'internalTxID'},
-                {id: 'transactionHash', title: 'transactionHash'},
-                {id: 'blockNumber', title: 'blockNumber'},
-                {id: 'durationSendToReceipt', title: 'durationSendToReceipt'},
-                {id: 'durationSendToConfirmation', title: 'durationSendToConfirmation'},
-                {id: 'timeSend', title: 'timeSend'},
-                {id: 'timeReceipt', title: 'timeReceipt'},
-                {id: 'timeConfirmed', title: 'timeConfirmed'},
-            ]
+            header: ['internalTxID', 'transactionHash', 'blockNumber','timeSend', 'timeReceipt', 'timeConfirmed']
         });
 
-        return csvStringifier.stringifyRecords(this.performanceTracks);
+        let headerString = csvStringifier.header.join(',') + '\n';
+
+        return headerString + csvStringifier.stringifyRecords(this.performanceTracks);
     }
 }

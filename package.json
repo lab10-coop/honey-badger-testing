@@ -9,7 +9,7 @@
     "keepalive-wait": "node src/keepalive-wait.js",
     "keepalive-nowait": "node src/keepalive-nowait.js",
     "goLive": "npm run tsc && node dist/thomas_playground.js",
-    "continuous": "ts-node src/runContinousTransactionsSender.ts",
+    "continuous": "npm run backup && ts-node src/runContinousTransactionsSender.ts npm run backup",
     "pendingTransactions": "ts-node src/runShowPendingTransactions.ts",
     "t_onceASecond1": "NODE_ENV=onceASecond1 ts-node src/runContinousTransactionsSender.ts",
     "t_onceASecond2": "NODE_ENV=onceASecond2 ts-node src/runContinousTransactionsSender.ts",
