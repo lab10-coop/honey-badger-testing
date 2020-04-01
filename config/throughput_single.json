@@ -8,5 +8,6 @@
   "calcNonceEveryTurn" : false,
   "trackPerformance" : true,
   "logToTerminal" : false,
-  "logToFile" : true
+  "logToFile" : true,
+  "maximumPoolSize": 372
 }

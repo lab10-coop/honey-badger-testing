@@ -14,7 +14,8 @@ export interface TestConfig {
     calcNonceEveryTurn: boolean,
     trackPerformance: boolean,
     logToTerminal: boolean | undefined,
-    logToFile: boolean | undefined
+    logToFile: boolean | undefined,
+    maximumPoolSize: number | undefined
 }
 
 

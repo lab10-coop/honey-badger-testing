@@ -22,6 +22,10 @@ if (config.logToTerminal !== undefined) {
     sender.logToConsole = config.logToTerminal;
 }
 
+if (config.maximumPoolSize !== undefined) {
+    sender.maximumPoolSize = config.maximumPoolSize;
+}
+
 sender.startSending().then((value: void) => {
     console.log(`started ContinuousTransactionsSender`);
 }).catch((reason : any) => {

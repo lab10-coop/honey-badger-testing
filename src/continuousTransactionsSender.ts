@@ -15,12 +15,15 @@ export class ContinuousTransactionsSender {
     private address : string;
     private privateKey : string;
     private isRunning = false;
+    private currentPoolSize = 0;
 
     public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
     public currentLogEntries = new Array<string>();
 
     public logToConsole = true;
     public logToMemory = false;
+
+    public maximumPoolSize: number = 99999999;
 
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true, public readonly batchSize: number | undefined = 1) {
 
@@ -53,6 +56,10 @@ export class ContinuousTransactionsSender {
 
     private async sendTx(nonce: number) {
 
+        if (this.currentPoolSize > this.maximumPoolSize) {
+            return;
+        }
+
         if (this.calcNonceEveryTurn) {
             this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
         }
@@ -81,12 +88,14 @@ export class ContinuousTransactionsSender {
             this.currentPerformanceTracks.set(signedTransaction.transactionHash!, new TransactionPerformanceTrack(this.currentInternalID, signedTransaction.transactionHash!, Date.now(), tx));
         }
 
+        this.currentPoolSize++;
         this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!).once('transactionHash', (receipt: string) => {
             this.log(`transactionHash ${receipt}`);
         })
         .once('receipt', (receipt => {
             const now = Date.now();
             this.log(`${now} - Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
+            this.currentPoolSize--;
             if (this.trackPerformance) {
                 const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
                 track.timeReceipt = now;
@@ -125,7 +134,11 @@ export class ContinuousTransactionsSender {
             if (this.isRunning) {
                 //shedule next function:
                 setTimeout(executeFunction, this.getRandomWaitInterval());
-                this.sendTx(this.currentNonce);
+                if (this.currentPoolSize < this.maximumPoolSize) {
+                    this.sendTx(this.currentNonce);
+                } else {
+                    console.log(`Ignoring transaciton: too many in pool ${this.currentPoolSize}`);
+                }
             }
         };
 
