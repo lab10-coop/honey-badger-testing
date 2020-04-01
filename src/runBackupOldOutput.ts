@@ -9,23 +9,33 @@ import { LogFileManager } from './logFileManager';
 var fs = require('fs');
 
 
+var args = process.argv.slice(2);
+
+let backupDir = '';
+
 console.log('current Dir: ',  process.cwd());
 const outPutDir = LogFileManager.getOutputDirectory();
 
-const  dt = new Date();
+if (args.length === 1)
+{
+    backupDir = outPutDir + '/' + args[0];
+} else {
 
-const dateFormated =
-    `${dt.getFullYear().toString()}${(dt.getMonth()+1).toString().padStart(2, '0')}${
-    dt.getDate().toString().padStart(2, '0')}${
-    dt.getFullYear().toString().padStart(4, '0')}${
-    dt.getHours().toString().padStart(2, '0')}${
-    dt.getMinutes().toString().padStart(2, '0')}${
-    dt.getSeconds().toString().padStart(2, '0')}`;
+    const  dt = new Date();
 
-console.log('Output Dir: ',  outPutDir);
-const backupDir = outPutDir + '/' + dateFormated;
-console.log('backupDir:' + backupDir);
+    const dateFormated =
+        `${dt.getFullYear().toString()}${(dt.getMonth()+1).toString().padStart(2, '0')}${
+        dt.getDate().toString().padStart(2, '0')}${
+        dt.getFullYear().toString().padStart(4, '0')}${
+        dt.getHours().toString().padStart(2, '0')}${
+        dt.getMinutes().toString().padStart(2, '0')}${
+        dt.getSeconds().toString().padStart(2, '0')}`;
 
+    console.log('Output Dir: ',  outPutDir);
+    backupDir = outPutDir + '/' + dateFormated;
+    console.log('backupDir:' + backupDir);
+
+}
 
 function getFilesToMove(directory: string) {
 
@@ -38,7 +48,8 @@ function getFilesToMove(directory: string) {
 
         if (!file.startsWith('.') //ignore all . files, we also create with this tool. we don't create . files..
             && (file.endsWith( LogFileManager.getFileExtensionCSV())
-                || file.endsWith(LogFileManager.getFileExtensionJSON()))){
+                || file.endsWith(LogFileManager.getFileExtensionJSON())
+                || file.endsWith(LogFileManager.getFileExtensionLog()))){
             filesToMove.push(file);
         }
     }
