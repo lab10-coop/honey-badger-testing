@@ -12,7 +12,9 @@ export interface TestConfig {
     mnemonic: string,
     mnemonicAccountIndex: number,
     calcNonceEveryTurn: boolean,
-    trackPerformance: boolean
+    trackPerformance: boolean,
+    logToTerminal: boolean | undefined,
+    logToFile: boolean | undefined
 }
 
 

@@ -15,7 +15,12 @@ export class ContinuousTransactionsSender {
     private address : string;
     private privateKey : string;
     private isRunning = false;
+
     public currentPerformanceTracks = new Map<string, TransactionPerformanceTrack>();
+    public currentLogEntries = new Array<string>();
+
+    public logToConsole = true;
+    public logToMemory = false;
 
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true, public readonly batchSize: number | undefined = 1) {
 
@@ -26,6 +31,24 @@ export class ContinuousTransactionsSender {
         this.address = wallet.address;
         this.privateKey = wallet.privateKey;
         //this.currentNonce = web3.eth.getTransactionCount();
+    }
+
+    private log(message: string, ...args: any) {
+        if (this.logToConsole){
+            console.log(message, args);
+        }
+        if (this.logToMemory) {
+            this.currentLogEntries.push(message);
+        }
+    }
+
+    private error(message: string, ...args: any) {
+        if (this.logToConsole){
+            console.error(message, args);
+        }
+        if (this.logToMemory) {
+            this.currentLogEntries.push(message);
+        }
     }
 
     private async sendTx(nonce: number) {
@@ -59,11 +82,11 @@ export class ContinuousTransactionsSender {
         }
 
         this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!).once('transactionHash', (receipt: string) => {
-            console.log(`transactionHash ${receipt}`);
+            this.log(`transactionHash ${receipt}`);
         })
         .once('receipt', (receipt => {
             const now = Date.now();
-            console.log(`${now} - Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
+            this.log(`${now} - Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
             if (this.trackPerformance) {
                 const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
                 track.timeReceipt = now;
@@ -72,7 +95,7 @@ export class ContinuousTransactionsSender {
         }))
         .once('confirmation', (confNumber, receipt) => {
             const now = Date.now();
-            console.log(`${now} - Transaction Confirmation ${confNumber}  - ${receipt.blockNumber} - ${receipt.transactionHash}`);
+            this.log(`${now} - Transaction Confirmation ${confNumber}  - ${receipt.blockNumber} - ${receipt.transactionHash}`);
             if (this.trackPerformance) {
                 const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
                 track.timeConfirmed = now;
@@ -82,7 +105,7 @@ export class ContinuousTransactionsSender {
             // and take the value of the blocktime.
         })
         .once('error', (error => {
-            console.log(`Error while sending Transaction: ${signedTransaction.transactionHash!}`, error);
+            this.error(`Error while sending Transaction: ${signedTransaction.transactionHash!}`, error);
         }))
     }
 
@@ -101,8 +124,6 @@ export class ContinuousTransactionsSender {
         const executeFunction = async () => {
             if (this.isRunning) {
                 //shedule next function:
-
-
                 setTimeout(executeFunction, this.getRandomWaitInterval());
                 this.sendTx(this.currentNonce);
             }

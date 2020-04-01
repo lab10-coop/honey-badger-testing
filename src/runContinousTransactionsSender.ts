@@ -14,6 +14,13 @@ const config = ConfigManager.getConfig();
 
 const sender = new ContinuousTransactionsSender(config.mnemonic, config.mnemonicAccountIndex, web3, config.continuousSenderIntervalMin, config.continuousSenderIntervalMax, config.calcNonceEveryTurn, config.trackPerformance);
 
+if (config.logToFile !== undefined){
+    sender.logToMemory = config.logToFile;
+}
+
+if (config.logToTerminal !== undefined) {
+    sender.logToConsole = config.logToTerminal;
+}
 
 sender.startSending().then((value: void) => {
     console.log(`started ContinuousTransactionsSender`);
@@ -36,6 +43,9 @@ setTimeout(()=> {
         console.log(csvResult);
         LogFileManager.writeCSVOutput(csvResult);
         LogFileManager.writeJSONOutput(JSON.stringify(performanceTracks));
+        if (config.logToFile) {
+            LogFileManager.writeLogOutput(sender.currentLogEntries);
+        }
         process.exit(0);
     }, 10000);
 }, config.testDurationMs);
