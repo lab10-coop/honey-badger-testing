@@ -11,7 +11,7 @@ const web3 = new Web3('ws://185.244.194.53:9541'); // hbbft
 
 let runningNonce;
 
-const RUNTIME_S = 10;
+const RUNTIME_S = 300;
 
 const createdTxs = new Set();
 const sentTxs = new Set();

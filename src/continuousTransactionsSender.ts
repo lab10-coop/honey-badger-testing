@@ -23,7 +23,7 @@ export class ContinuousTransactionsSender {
     public logToConsole = true;
     public logToMemory = false;
 
-    public maximumPoolSize: number = 99999999;
+    public maximumPoolSize: number | undefined;
 
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true, public readonly batchSize: number | undefined = 1) {
 
@@ -56,10 +56,12 @@ export class ContinuousTransactionsSender {
 
     private async sendTx(nonce: number) {
 
-        if (this.currentPoolSize > this.maximumPoolSize) {
-            return;
+        if (this.maximumPoolSize !== undefined){
+            if (this.currentPoolSize > this.maximumPoolSize) {
+                return;
+            }
         }
-
+        
         if (this.calcNonceEveryTurn) {
             this.currentNonce = await this.web3.eth.getTransactionCount(this.address);
         }
@@ -88,34 +90,44 @@ export class ContinuousTransactionsSender {
             this.currentPerformanceTracks.set(signedTransaction.transactionHash!, new TransactionPerformanceTrack(this.currentInternalID, signedTransaction.transactionHash!, Date.now(), tx));
         }
 
-        this.currentPoolSize++;
-        this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!).once('transactionHash', (receipt: string) => {
-            this.log(`transactionHash ${receipt}`);
-        })
-        .once('receipt', (receipt => {
-            const now = Date.now();
-            this.log(`${now} - Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
-            this.currentPoolSize--;
-            if (this.trackPerformance) {
-                const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
-                track.timeReceipt = now;
-                track.blockNumber = receipt.blockNumber;
-            }
-        }))
-        .once('confirmation', (confNumber, receipt) => {
-            const now = Date.now();
-            this.log(`${now} - Transaction Confirmation ${confNumber}  - ${receipt.blockNumber} - ${receipt.transactionHash}`);
-            if (this.trackPerformance) {
-                const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
-                track.timeConfirmed = now;
-                track.blockNumber = receipt.blockNumber; //might overwrite if the block get's mined in another block than it got received
-            }
-            // we could figure out the confirmation time here be gather the block from the blockchain,
-            // and take the value of the blocktime.
-        })
-        .once('error', (error => {
-            this.error(`Error while sending Transaction: ${signedTransaction.transactionHash!}`, error);
-        }))
+        if (this.maximumPoolSize !== undefined) {
+            this.currentPoolSize++;
+        }
+        
+        const sendHandler = this.web3.eth.sendSignedTransaction(signedTransaction.rawTransaction!);
+        
+        const needToReadResult = this.maximumPoolSize !== undefined || this.logToConsole || this.logToMemory;
+
+        if (needToReadResult) {
+            sendHandler.once('transactionHash', (receipt: string) => {
+                this.log(`transactionHash ${receipt}`);
+            })
+            .once('receipt', (receipt => {
+                const now = Date.now();
+                this.log(`${now} - Received ${receipt.transactionHash} in block ${receipt.blockNumber}`);
+                this.currentPoolSize--;
+                if (this.trackPerformance) {
+                    const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
+                    track.timeReceipt = now;
+                    track.blockNumber = receipt.blockNumber;
+                }
+            }))
+            .once('confirmation', (confNumber, receipt) => {
+                const now = Date.now();
+                this.log(`${now} - Transaction Confirmation ${confNumber}  - ${receipt.blockNumber} - ${receipt.transactionHash}`);
+                if (this.trackPerformance) {
+                    const track = this.currentPerformanceTracks.get(receipt.transactionHash)!;
+                    track.timeConfirmed = now;
+                    track.blockNumber = receipt.blockNumber; //might overwrite if the block get's mined in another block than it got received
+                }
+                // we could figure out the confirmation time here be gather the block from the blockchain,
+                // and take the value of the blocktime.
+            })
+            .once('error', (error => {
+                this.error(`Error while sending Transaction: ${signedTransaction.transactionHash!}`, error);
+            }))
+        }
+
     }
 
     private getRandomWaitInterval() {
@@ -134,10 +146,16 @@ export class ContinuousTransactionsSender {
             if (this.isRunning) {
                 //shedule next function:
                 setTimeout(executeFunction, this.getRandomWaitInterval());
-                if (this.currentPoolSize < this.maximumPoolSize) {
+                if (this.maximumPoolSize !== undefined) {
+                    if (this.currentPoolSize < this.maximumPoolSize) {
+                        this.sendTx(this.currentNonce);
+                    } else {
+                        //console.log(`Ignoring transaciton: too many in pool ${this.currentPoolSize}`);
+                    }
+                }
+                else {
+                    //no maximumPoolSize defined, sending in any case.
                     this.sendTx(this.currentNonce);
-                } else {
-                    //console.log(`Ignoring transaciton: too many in pool ${this.currentPoolSize}`);
                 }
             }
         };

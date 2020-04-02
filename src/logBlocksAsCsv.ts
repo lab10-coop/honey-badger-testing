@@ -26,7 +26,7 @@ function timestampToNumber(value: number | string) : number {
 
 async function doLoggings() {
   const latestBlockNumber = await web3.eth.getBlockNumber();
-  const numberOfBlocksToLog = 100;
+  const numberOfBlocksToLog = 1000;
 
   const blockInfos = new Array<BlockInfo>();
 
