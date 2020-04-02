@@ -137,7 +137,7 @@ export class ContinuousTransactionsSender {
                 if (this.currentPoolSize < this.maximumPoolSize) {
                     this.sendTx(this.currentNonce);
                 } else {
-                    console.log(`Ignoring transaciton: too many in pool ${this.currentPoolSize}`);
+                    //console.log(`Ignoring transaciton: too many in pool ${this.currentPoolSize}`);
                 }
             }
         };

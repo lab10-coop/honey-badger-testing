@@ -1,0 +1,12 @@
+
+run2:
+----
+config => ws://185.244.194.56:9542"
+version: be1b3ec0c7f85202a1d1de7a218e271dc293b8f0
+
+
+### Block Bestätigung:
+- Unterschiede HB - AURA - verhalten
+- Macht es einen Unterschied ob gegen RPC node oder Mining Node kommuniziert wird. ===>  JA, RPC Node returned sofort.
+
+

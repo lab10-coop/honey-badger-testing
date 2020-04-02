@@ -18,8 +18,6 @@
     "t_throughput_single": "NODE_ENV=throughput_single ts-node src/runContinousTransactionsSender.ts",
     "testboth": "npm-run-all  --sequential backup --parallel t_onceASecond1 t_onceASecond2  --sequential backup",
     "feedAccounts": "ts-node src/runFeedAccount.ts",
-    "arguments" : "ts-node src/runArguments.ts",
-    "args": "npm-run-all --parallel arguments arguments --$(date)",
     "analyseTransaction": "ts-node src/runAnalyseTransaction.ts",
     "backup" : "ts-node src/runBackupOldOutput.ts",
     "latency1": "npm-run-all --sequential backup t_latency_5m_single_transactions --sequential backup",
