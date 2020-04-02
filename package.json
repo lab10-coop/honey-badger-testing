@@ -22,8 +22,8 @@
     "backup" : "ts-node src/runBackupOldOutput.ts",
     "latency1": "npm-run-all --sequential backup t_latency_5m_single_transactions --sequential backup",
     "latency2": "npm-run-all --sequential backup --parallel t_latency_5m_baseline10tx t_latency_5m_single_transactions --sequential backup",
-    "throughput1": "npm-run-all backup t_throughput_single backup"
-    
+    "throughput1": "npm-run-all backup t_throughput_single backup",
+    "logBlocksAsCsv": "ts-node src/logBlocksAsCsv.ts"
   },
   "repository": {
     "type": "git",

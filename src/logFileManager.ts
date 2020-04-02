@@ -23,6 +23,10 @@ export class LogFileManager {
         return '.log.txt';
     }
 
+    public static getFileExtensionBlockInfos() : string {
+        return '.blocks.txt';
+    }
+
     public static getLogConfigName() : string {
         if (process.env.NODE_ENV && process.env.NODE_ENV !== '') {
             return process.env.NODE_ENV;
@@ -50,6 +54,10 @@ export class LogFileManager {
         return `${LogFileManager.getOutputDirectory()}/${LogFileManager.getLogConfigName()}${LogFileManager.getFileExtensionLog()}`;
     }
 
+    public static getOutputPathBlock() {
+        return `${LogFileManager.getOutputDirectory()}/blocks${LogFileManager.getFileExtensionLog()}`;
+    }
+
     public static writeCSVOutput(csv: string) {
         LogFileManager.ensureOutputPath();
         fs.writeFileSync(this.getOutputPathCSV(), new Buffer(csv));
@@ -64,5 +72,10 @@ export class LogFileManager {
         const resultForFile = text.join('\n');
         LogFileManager.ensureOutputPath();
         fs.writeFileSync(this.getOutputPathTextLog(), new Buffer(resultForFile));
+    }
+
+    public static writeBlockchainOutput(test: string) {
+        LogFileManager.ensureOutputPath();
+        fs.writeFileSync(this.getOutputPathBlock(), test);
     }
 }
