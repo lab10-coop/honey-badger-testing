@@ -1,5 +1,5 @@
 {
-  "networkUrl" : "ws://localhost:9540",
+  "networkUrl" : "ws://rpc.hbbft.artis.network:9540",
   "continuousSenderIntervalMin": 1000,
   "continuousSenderIntervalMax": 10000,
   "testDurationMs" :  300000,

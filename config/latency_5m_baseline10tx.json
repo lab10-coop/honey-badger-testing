@@ -1,5 +1,5 @@
 {
-  "networkUrl" : "ws://185.244.194.56:9542",
+  "networkUrl" : "ws://rpc.hbbft.artis.network:9540",
   "continuousSenderIntervalMin": 100,
   "continuousSenderIntervalMax": 100,
   "testDurationMs" :  300000,
