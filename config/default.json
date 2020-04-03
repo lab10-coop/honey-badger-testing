@@ -1,12 +1,12 @@
 {
 
   "networkUrl" : "ws://rpc.hbbft.artis.network:9540",
-  "continuousSenderIntervalMin": 3000,
-  "continuousSenderIntervalMax": 3000,
-  "testDurationMs" : 10000,
+  "continuousSenderIntervalMin": 10,
+  "continuousSenderIntervalMax": 10,
+  "testDurationMs" : 60000,
   "mnemonic": "index photo humble announce organ flush winter keep blush mouse spoil panel sustain trade you",
   "mnemonicAccountIndex" : 1,
-  "calcNonceEveryTurn" : true,
+  "calcNonceEveryTurn" : false,
   "trackPerformance" : true,
   "logToTerminal" : true,
   "logToFile" : true
