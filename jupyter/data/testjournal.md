@@ -83,6 +83,8 @@ start Block: 11809
 15-16 ms .
 start block: #12116
 
+endBlock: #12296
+
 ## Test tx500
 
 17ms was working fine, lets go deeper to 14ms
