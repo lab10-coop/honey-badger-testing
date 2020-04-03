@@ -42,16 +42,19 @@ async function doLoggings() {
       size: block.size,
     });
    
-    const csvStringifier = createCsvStringifier({
-        alwaysQuote: true,
-        header: ['blockNumber', 'numberOfTransactions', 'gasUsed','timestamp', 'size']
-    });
-
-    let headerString = csvStringifier.header.join(',') + '\n';
-    const contentToExport = headerString + csvStringifier.stringifyRecords(blockInfos);
-    LogFileManager.writeBlockchainOutput(contentToExport);
 
   }
+
+  const csvStringifier = createCsvStringifier({
+    alwaysQuote: true,
+    header: ['blockNumber', 'numberOfTransactions', 'gasUsed','timestamp', 'size']
+  });
+
+  let headerString = csvStringifier.header.join(',') + '\n';
+
+
+  const contentToExport = headerString + csvStringifier.stringifyRecords(blockInfos);
+  LogFileManager.writeBlockchainOutput(contentToExport);
 }
 
 doLoggings().then(() => {
