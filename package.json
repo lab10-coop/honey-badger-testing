@@ -39,7 +39,7 @@
     "throughput1": "npm-run-all backup t_throughput_single backup",
     "throughput2": "npm-run-all backup --parallel t_throughput_p1 t_throughput_p2 t_throughput_p3 t_throughput_p4 t_throughput_p5 t_throughput_p6 t_throughput_p7 t_throughput_p1a t_throughput_p2a t_throughput_p3a t_throughput_p4a t_throughput_p5a t_throughput_p6a t_throughput_p7a --sequential backup",
     "throughput2_light": "npm-run-all backup --parallel t_throughput_p1 t_throughput_p2 t_throughput_p3 t_throughput_p4 t_throughput_p5 t_throughput_p6 t_throughput_p7 --sequential backup",
-    "logBlocksAsCsv": "ts-node src/logBlocksAsCsv.ts"
+    "logBlocksAsCsv": "ts-node src/runLogBlocksAsCsv.ts"
   },
   "repository": {
     "type": "git",

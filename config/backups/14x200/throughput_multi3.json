@@ -4,9 +4,10 @@
   "continuousSenderIntervalMax": 14,
   "testDurationMs" :  300000,
   "mnemonic": "index photo humble announce organ flush winter keep blush mouse spoil panel sustain trade you",
-  "mnemonicAccountIndex" : 23,
+  "mnemonicAccountIndex" : 13,
   "calcNonceEveryTurn" : false,
-  "trackPerformance" : false,
+  "trackPerformance" : true,
   "logToTerminal" : false,
-  "logToFile" : false
+  "logToFile" : true,
+  "maximumPoolSize": 200
 }

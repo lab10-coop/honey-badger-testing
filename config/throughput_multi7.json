@@ -1,13 +1,12 @@
 {
   "networkUrl" : "ws://95.216.188.250:9547",
-  "continuousSenderIntervalMin": 30,
-  "continuousSenderIntervalMax": 30,
+  "continuousSenderIntervalMin": 11,
+  "continuousSenderIntervalMax": 11,
   "testDurationMs" :  300000,
   "mnemonic": "index photo humble announce organ flush winter keep blush mouse spoil panel sustain trade you",
   "mnemonicAccountIndex" : 17,
   "calcNonceEveryTurn" : false,
-  "trackPerformance" : true,
+  "trackPerformance" : false,
   "logToTerminal" : false,
-  "logToFile" : false,
-  "maximumPoolSize": 200
+  "logToFile" : false
 }
