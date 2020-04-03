@@ -72,11 +72,35 @@ Gegen Ende wurde einige Transaktionen abgelehnt, weil TX Queue Voll war.
 Ende: 11806
 
 
+## Test tx411
+
+17ms anstelle von 20ms.
+start Block: 11809
+
+
+## Test tx451
+
+15-16 ms .
+start block: #12116
+
+## Test tx500
+
+17ms was working fine, lets go deeper to 14ms
+
+it is allready pretty close to the tx538.
+we dit not finish the tests, because it showed already that the system can't handle it.
+
+
+
+
 ## test tx952
+
+TEST was only Planned
 
 Target: 952 Transaktionen pro Sekunde
 
 Erwarung: 
 Chain schafft die 952 TXs pro Sekunde nicht (Hardware Limit),
 rejecting transactions happens much earlier.
+
 
