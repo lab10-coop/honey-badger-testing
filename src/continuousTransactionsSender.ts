@@ -27,6 +27,10 @@ export class ContinuousTransactionsSender {
 
     public constructor(readonly mnemonic: string, readonly mnemonicAccountIndex: number, public readonly web3: Web3, public readonly sheduleInMsMinimum: number, public readonly sheduleInMsMaximum: number, public readonly calcNonceEveryTurn: boolean = false, public readonly trackPerformance = true, public readonly batchSize: number | undefined = 1) {
 
+        if (this.sheduleInMsMinimum > this.sheduleInMsMaximum) {
+            throw new Error(`sheduleInMsMinimum must be equal or less than this.sheduleInMsMaximum`);
+        }
+
         const wallets = generateAddressesFromSeed(mnemonic, mnemonicAccountIndex + 1);
         const wallet = wallets[mnemonicAccountIndex];
         console.log(wallet);

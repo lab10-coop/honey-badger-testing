@@ -24,7 +24,7 @@ export class LogFileManager {
     }
 
     public static getFileExtensionBlockInfos() : string {
-        return '.blocks.txt';
+        return '.blocks.csv';
     }
 
     public static getLogConfigName() : string {
@@ -55,7 +55,7 @@ export class LogFileManager {
     }
 
     public static getOutputPathBlock() {
-        return `${LogFileManager.getOutputDirectory()}/blocks${LogFileManager.getFileExtensionLog()}`;
+        return `${LogFileManager.getOutputDirectory()}/blocks${LogFileManager.getFileExtensionBlockInfos()}`;
     }
 
     public static writeCSVOutput(csv: string) {

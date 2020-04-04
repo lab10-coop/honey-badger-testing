@@ -49,7 +49,8 @@ function getFilesToMove(directory: string) {
         if (!file.startsWith('.') //ignore all . files, we also create with this tool. we don't create . files..
             && (file.endsWith( LogFileManager.getFileExtensionCSV())
                 || file.endsWith(LogFileManager.getFileExtensionJSON())
-                || file.endsWith(LogFileManager.getFileExtensionLog()))){
+                || file.endsWith(LogFileManager.getFileExtensionLog())
+                || file.endsWith(LogFileManager.getFileExtensionBlockInfos()))){
             filesToMove.push(file);
         }
     }
