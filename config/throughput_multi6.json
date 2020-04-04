@@ -1,7 +1,7 @@
 {
   "networkUrl" : "ws://185.244.194.55:9546",
-  "continuousSenderIntervalMin": 14,
-  "continuousSenderIntervalMax": 14,
+  "continuousSenderIntervalMin": 25,
+  "continuousSenderIntervalMax": 25,
   "testDurationMs" :  300000,
   "mnemonic": "index photo humble announce organ flush winter keep blush mouse spoil panel sustain trade you",
   "mnemonicAccountIndex" : 16,

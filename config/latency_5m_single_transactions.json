@@ -6,5 +6,7 @@
   "mnemonic": "index photo humble announce organ flush winter keep blush mouse spoil panel sustain trade you",
   "mnemonicAccountIndex" : 1,
   "calcNonceEveryTurn" : false,
-  "trackPerformance" : true
+  "trackPerformance" : true,
+  "logToTerminal" : true,
+  "logToFile" : true
 }

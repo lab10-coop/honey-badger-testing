@@ -1,5 +1,6 @@
 import { ConfigManager } from './configManager';
 import { LogFileManager } from './logFileManager';
+import BigNumber from 'bignumber.js';
 
 const web3 = ConfigManager.getWeb3();
 const createCsvStringifier = require('csv-writer').createObjectCsvStringifier;
@@ -26,9 +27,15 @@ function timestampToNumber(value: number | string) : number {
 
 async function doLoggings() {
   const latestBlockNumber = await web3.eth.getBlockNumber();
-  const numberOfBlocksToLog = 1000;
+  let numberOfBlocksToLog = 1000;
+
+  if ( numberOfBlocksToLog > latestBlockNumber ){
+    numberOfBlocksToLog = latestBlockNumber;
+  }
 
   const blockInfos = new Array<BlockInfo>();
+
+
 
   for(let blockNumber = latestBlockNumber - numberOfBlocksToLog; blockNumber <= latestBlockNumber; blockNumber++) {
     const block = await web3.eth.getBlock(blockNumber);
