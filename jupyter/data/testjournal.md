@@ -106,3 +106,20 @@ Chain schafft die 952 TXs pro Sekunde nicht (Hardware Limit),
 rejecting transactions happens much earlier.
 
 
+## final run ?! run 4
+
+### latency1
+
+block 12299 - 12357
+
+### latency 2
+
+block 12358 -  12670
+
+### throughput 1
+
+block 12671 - 13047
+
+### throughput 2
+
+block 13048 - 13190
