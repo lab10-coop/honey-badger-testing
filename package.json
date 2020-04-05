@@ -33,7 +33,7 @@
     "throughput2": "npm-run-all backup --parallel t_throughput_p1 t_throughput_p2 t_throughput_p3 t_throughput_p4 t_throughput_p5 t_throughput_p6 t_throughput_p7 --sequential logBlocksAsCsv backup",
     "logBlocksAsCsv": "ts-node src/runLogBlocksAsCsv.ts",
     "waitAMinute": "ts-node src/runWait.ts",
-    "runAllTests": "npm-run-all latency1 waitAMinute latency2 waitAMinute throughput1 waitAMinute throughput2"
+    "runAllTests": "npm-run-all latency1 waitAMinute latency2 waitAMinute throughput1 waitAMinute waitAMinute throughput2"
   },
   "repository": {
     "type": "git",
