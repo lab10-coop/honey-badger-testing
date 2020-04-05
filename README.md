@@ -2,7 +2,6 @@
 
 A collection of scripts to test the Honey Badger BFT integration in Parity
 
-See: https://github.com/artis-eco/wiki/wiki/Honey-Badger-BFT-Hypothesis-Testing
 
 # Test Scripts
 
@@ -12,16 +11,34 @@ The test scripts are implemented using node.js v10, install and run as usual:
 npm ci
 ```
 
-Then either run
-```
-npm run keepalive-nowait
-```
-or 
-```
-npm run keepalive-wait
-```
+There are following tests available:
+- latency1 (1 Transaction all 1-10 Seconds)
+- latency2 (1 Transaction all 1-10 Seconds, background baseload 10tx/second)
+- throughput1 (~ 70 transactions a second)
+- throughput2 (~ 7 * 70 transactions a second, distributed on multiple nodes in the network.)
 
-Where the "wait" version waits until the rpc server incremented the transaction nonce, while the "nowait" script version increments the nonce without waiting for the rpc server.
+The Tests are further described in detail here:
+https://github.com/artis-eco/wiki/wiki/Honey-Badger-BFT-Hypothesis-Testing
+
+It is possible to run all tests using the `npm run runAllTests` command.
+
+
+The Tests are configured in the ./config directory.
+
+Starting from a new Testchain requires to feed those testaccounts first: `npm run feedAccounts`
+
+
+## Test Results
+
+The tests write Testresults into the output directory.
+This directory is not mapped by the Git repository.
+Testresults, that require to be analysed need to get 
+manually transfered to the jupyter/data directory.
+
+## Test Result Analysis
+
+Jupyter Notebooks are used to analyse the testresults.
+please refere to the jupyter/README.md
 
 # Testnet Setup Scripts
 
@@ -64,12 +81,4 @@ To be compatible with both local and Docker nodes we have to use an appropriate 
 For the sake of simplicity we choose a single directory containing all configs and data to be mounted into a Docker volume.
 
 Caveat: Filesystem performance inside of a Docker volume may be significantly slower than inside the container. We may re-consider the approach of sharing the "data" folder through a Docker volume for that reason.
-
-
-# Performance Tests
-
-The NPM - Typescript Package contains Stress and Performance tests.
-
-
-## Config Guide
 
