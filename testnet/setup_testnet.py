@@ -13,7 +13,7 @@ def run_cmd(args, cwd=None):
 
 print('Generating Docker config volume folders for {num_nodes} hbbft nodes'.format(num_nodes=num_nodes))
 
-generator_dir = '../../parity-ethereum/ethcore/engines/hbbft/hbbft_config_generator'
+generator_dir = '../../openethereum/ethcore/engines/hbbft/hbbft_config_generator'
 
 cmd = ['cargo', 'run', str(num_nodes), "Docker"]
 if len(sys.argv) > 2:
@@ -24,7 +24,7 @@ run_cmd(cmd, generator_dir)
 # The location of the posdao-contracts repository clone.
 posdao_contracts_dir = '../../posdao-contracts'
 # The JSON file with initialization data produced by hbbft_config_generator, relative to the posdao-contracts folder.
-init_data_file = '../parity-ethereum/ethcore/engines/hbbft/hbbft_config_generator/keygen_history.json'
+init_data_file = '../openethereum/ethcore/engines/hbbft/hbbft_config_generator/keygen_history.json'
 
 os.environ["NETWORK_NAME"] = "DPoSChain"
 os.environ["NETWORK_ID"] = "101"
