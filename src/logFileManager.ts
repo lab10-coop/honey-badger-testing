@@ -27,6 +27,11 @@ export class LogFileManager {
         return '.blocks.csv';
     }
 
+    public static getFileExtensionBlockNumber() : string {
+        return '.blocknumber.txt';
+    }
+
+
     public static getLogConfigName() : string {
         if (process.env.NODE_ENV && process.env.NODE_ENV !== '') {
             return process.env.NODE_ENV;
@@ -58,6 +63,10 @@ export class LogFileManager {
         return `${LogFileManager.getOutputDirectory()}/blocks${LogFileManager.getFileExtensionBlockInfos()}`;
     }
 
+    public static getOutputPathBlockNumber() {
+        return `${LogFileManager.getOutputDirectory()}/startblockNumber${LogFileManager.getFileExtensionBlockNumber()}`;
+    }
+
     public static writeCSVOutput(csv: string) {
         LogFileManager.ensureOutputPath();
         fs.writeFileSync(this.getOutputPathCSV(), new Buffer(csv));
@@ -78,4 +87,11 @@ export class LogFileManager {
         LogFileManager.ensureOutputPath();
         fs.writeFileSync(this.getOutputPathBlock(), test);
     }
+
+
+    public static writeBlockNumberOutput(blockNumber: number) {
+        LogFileManager.ensureOutputPath();
+        fs.writeFileSync(this.getOutputPathBlockNumber(), blockNumber.toString());
+    }
+    
 }

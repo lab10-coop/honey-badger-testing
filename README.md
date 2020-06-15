@@ -82,3 +82,13 @@ For the sake of simplicity we choose a single directory containing all configs a
 
 Caveat: Filesystem performance inside of a Docker volume may be significantly slower than inside the container. We may re-consider the approach of sharing the "data" folder through a Docker volume for that reason.
 
+
+# Roadmap / Open Issues
+
+
+## Block Number Tracking
+
+Requires to manually find the first block in the CSV.
+We could fix this by memorizing the block number befor we start.
+For example by writing it into a file.
+

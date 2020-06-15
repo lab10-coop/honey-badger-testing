@@ -50,7 +50,8 @@ function getFilesToMove(directory: string) {
             && (file.endsWith( LogFileManager.getFileExtensionCSV())
                 || file.endsWith(LogFileManager.getFileExtensionJSON())
                 || file.endsWith(LogFileManager.getFileExtensionLog())
-                || file.endsWith(LogFileManager.getFileExtensionBlockInfos()))){
+                || file.endsWith(LogFileManager.getFileExtensionBlockInfos())
+                || file.endsWith(LogFileManager.getFileExtensionBlockNumber()))){
             filesToMove.push(file);
         }
     }
