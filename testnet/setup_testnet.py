@@ -21,9 +21,9 @@ if len(sys.argv) > 2:
 
 run_cmd(cmd, generator_dir)
 
-# The location of the posdao-contracts repository clone.
-posdao_contracts_dir = '../../posdao-contracts'
-# The JSON file with initialization data produced by hbbft_config_generator, relative to the posdao-contracts folder.
+# The location of the hbbft-posdao-contracts repository clone.
+posdao_contracts_dir = '../../hbbft-posdao-contracts'
+# The JSON file with initialization data produced by hbbft_config_generator, relative to the hbbft-posdao-contracts folder.
 init_data_file = '../openethereum/ethcore/engines/hbbft/hbbft_config_generator/keygen_history.json'
 
 os.environ["NETWORK_NAME"] = "DPoSChain"
@@ -39,7 +39,7 @@ cmd = ['node', 'scripts/make_spec_hbbft.js', init_data_file]
 run_cmd(cmd, posdao_contracts_dir)
 
 # Output of chain spec generation
-spec_file = '../../posdao-contracts/spec_hbbft.json'
+spec_file = '../../hbbft-posdao-contracts/spec_hbbft.json'
 
 # Set up validator nodes
 for i in range(1, num_nodes + 1):
