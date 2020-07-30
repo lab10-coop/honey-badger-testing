@@ -17,7 +17,7 @@ generator_dir = '../../openethereum/ethcore/engines/hbbft/hbbft_config_generator
 
 cmd = ['cargo', 'run', str(num_nodes), "Docker"]
 if len(sys.argv) > 2:
-    cmd.append(sys.argv[2])
+    cmd.extend(sys.argv[2:])
 
 run_cmd(cmd, generator_dir)
 
