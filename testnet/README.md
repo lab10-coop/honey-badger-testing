@@ -9,8 +9,8 @@ The `setup_testnet.py` script runs the `hbbft_config_generator` contained in the
 Both the `openethereum` and the `posdao-contracts` repositories need to be checked out at the same directory level as this repository.
 
 Currently these are:
-* `https://github.com/lab10-coop/posdao-contracts` at the `df-hbbft-spec-automation` branch 
-* `https://github.com/artis-eco/openethereum` at the `df-synckeygen-contract` branch
+* `https://github.com/DMDcoin/hbbft-posdao-contracts` at the `df-hbbft-spec-automation` branch 
+* `https://github.com/DMDcoin/openethereum` at the `df-synckeygen-contract` branch
 
 After cloning openethereum at the right branch build openethereum using:
 ```
